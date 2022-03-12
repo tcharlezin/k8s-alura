@@ -23,7 +23,11 @@ kubectl apply -f portal-noticias-replicaset.yaml
 kubectl apply -f nginx-deployment.yaml -- record # Can use CHANGE CAUSE to annotate
 
 # INTERNAL-IP:           kubectl get nodes -O wide
-# WATCH:                 kubectl get rs --watch
+
+# WATCH:                 kubectl get [pod, svc, rs] --watch
+
 # DEPLOYMENT REVISIONS:  kubectl rollout history deployment nginx-deployment
 # CHANGE CAUSE:          kubectl annotate deployment nginx-deployment kubernetes.io/change-cause="Definindo a imagem com versão latest"
 # ROLLOUT UNDO:          kubectl rollout undo deployment nginx-deployment --to-revision=3
+
+# ROLLOUT HISTORY:       kubectl rollout history deployment portal-noticias-deployment
