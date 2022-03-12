@@ -1,33 +1,26 @@
 #!/bin/bash
 
-# ConfigMap
+# Create ConfigMap
 kubectl apply -f db-configmap.yaml
 kubectl apply -f portal-configmap.yaml
 kubectl apply -f sistema-configmap.yaml
-
-# Pods
-kubectl apply -f db-noticias.yaml
-# This pod will be covered by ReplicaSet
-# kubectl apply -f portal-noticias.yaml
-kubectl apply -f sistema-noticias.yaml
 
 # Services
 kubectl apply -f svc-db-noticias.yaml
 kubectl apply -f svc-portal-noticias.yaml
 kubectl apply -f svc-sistema-noticias.yaml
 
-# ReplicaSet
-kubectl apply -f portal-noticias-replicaset.yaml
+# Deployment (Example of NGINX)
+kubectl apply -f db-noticias-deployment.yaml
+kubectl apply -f portal-noticias-deployment.yaml
+kubectl apply -f sistema-noticias-deployment.yaml
 
-# Deployment
-kubectl apply -f nginx-deployment.yaml -- record # Can use CHANGE CAUSE to annotate
 
-# INTERNAL-IP:           kubectl get nodes -O wide
+# kubectl rollout history deployment portal-noticias-deployment
+kubectl annotate deployment portal-noticias-deployment kubernetes.io/change-cause="Definindo o portal com versão 1"
 
-# WATCH:                 kubectl get [pod, svc, rs] --watch
+# kubectl rollout history deployment sistema-noticias-deployment
+kubectl annotate deployment sistema-noticias-deployment kubernetes.io/change-cause="Definindo o sistema com versão 1"
 
-# DEPLOYMENT REVISIONS:  kubectl rollout history deployment nginx-deployment
-# CHANGE CAUSE:          kubectl annotate deployment nginx-deployment kubernetes.io/change-cause="Definindo a imagem com versão latest"
-# ROLLOUT UNDO:          kubectl rollout undo deployment nginx-deployment --to-revision=3
-
-# ROLLOUT HISTORY:       kubectl rollout history deployment portal-noticias-deployment
+# kubectl rollout history deployment db-noticias-deployment
+kubectl annotate deployment db-noticias-deployment kubernetes.io/change-cause="Definindo o db com versão 1"
